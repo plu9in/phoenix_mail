@@ -2,6 +2,8 @@ defmodule PhoenixMailTest do
   use ExUnit.Case
   doctest PhoenixMail
 
+  require Logger
+
   @moduledoc """
   Responsible for sending mails.
   """
@@ -11,6 +13,6 @@ defmodule PhoenixMailTest do
 
   test "send mail" do
     email = %{from: "yourmail@gmail.com", reply: "noreply@gmail.com", to: ["onefriend@gmail.com", "secondfriend@domain.com"], subject: "Guess what ?",  text: "<strong> It is a message !</strong>"}
-    {:ok, _} = send_email(email)
+    send_email(email)
   end
 end

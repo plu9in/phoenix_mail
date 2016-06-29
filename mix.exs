@@ -34,6 +34,6 @@ defmodule PhoenixMail.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    [{:gen_smtp, "~> 0.9.0"}]
+    [{:gen_smtp, "~> 0.11.0"}]
   end
 end

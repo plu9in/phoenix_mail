@@ -64,11 +64,15 @@ defmodule PhoenixMail.Client do
   defp get_subtype(:mixed), do: "mixed"
   defp get_subtype(_), do: "html"
 
-  defp get_headers(_conf, email) do
-      [{"From", Dict.fetch!(email, :reply) },
-       {"To", Dict.fetch!(email, :to) |> Enum.join(";")},
+  defp get_headers(conf, email) do
+      [{"From", Dict.fetch!(email, :from) },
+       {"Reply", Dict.fetch!(conf, :reply)},
+       {"To", get_to_addresses Dict.fetch!(email, :to)},
        {"Subject", Dict.get(email, :subject, "")}]
   end
+
+  defp get_to_addresses(addresses) when is_list(addresses), do: addresses |> Enum.join(";")
+  defp get_to_addresses(addresses)                        , do: addresses
 
   defp get_content_type_params(_, _), do: []
 
@@ -80,7 +84,7 @@ defmodule PhoenixMail.Client do
   defp encode_options(_, _), do: []
 
   defp sendit(conf, email, attrs) do
-    :gen_smtp_client.send_blocking({Dict.get(email, :reply, "noreply@gmail.com"),Dict.fetch!(email, :to) , attrs}, conf[:mailer_smtp_config])
+    :gen_smtp_client.send_blocking({Dict.get(conf, :reply, "noreply@domain.com"),Dict.fetch!(email, :to) , attrs}, conf[:mailer_smtp_config])
   end
 
 end
